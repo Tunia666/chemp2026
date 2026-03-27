@@ -122,6 +122,7 @@ class Monitor:
         self.events_queue = Queue()
         self.policies = []
         self.violations_log = []
+        self._running = False
 
     def add_policy(self, policy_func):
         """Добавить политику безопасности."""
@@ -149,7 +150,9 @@ class Monitor:
                 self.lights.events_queue.put(event)
             else:
                 self.log_violation(event, "Политика безопасности запрещает это событие")
-
+    def stop(self):
+        self._running = False
+        self.events_queue.put(None)
 
 # ─────────────────────────────────────────────────────
 # Задание Б.1: Реализуйте политику whitelist
